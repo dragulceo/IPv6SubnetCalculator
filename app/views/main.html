@@ -1,0 +1,106 @@
+<div class="jumbotron">
+	<h1>IPv6 subnet calculator</h1>
+</div>
+<div class="col-md-12">
+	
+</div>
+<div class="row">
+	<div class="col-md-5" ng:controller="Ipv6subnetCtrl">
+		<form name="form" class="form row">
+			<fieldset>
+				<legend></legend>
+				<label>Format: ipv6/mask1 mask2 [index]</label>
+				<input type="text" class="form-control" name="oneLine" placeholder="" ng-change="onOneLineChange(this)" ng-model="oneLine" ipv6onblur="updateAddress()">
+				<p>Eg: <a href="#/ip/2001:0db8:85a3::/16/32/index/10" title="Example">2001:0db8:85a3::/16 32 10</a></p>
+			</fieldset>
+			<div class="result"><button class="btn btn-sm btn-primary default small" ng-click="saveToHistory()">Add to history</button></div>
+		</form>
+		<div ng-show="shouldShowSubnets()">
+			<div ng-show="pages.length">
+				<ul class="pagination pagination-sm">
+					<li ng-repeat="n in pages track by $index" ng-class="{active: n==record.page}">
+					<a ng-if="n != '...'" ng-click="setPage(n)">{{n}}</a>
+					<span ng-if="n == '...'">{{n}}</span>
+					</li>
+				</ul>
+			</div>
+			<ul>
+				<li ng-repeat="ip in subnets track by $index">{{ip}}</li>
+			</ul>
+		</div>
+		<div ng-show="shouldShowIpAddress()">
+			<h2>{{ipAddress()}}</h2>
+		</div>
+	</div>
+	<div class="col-md-7">
+		<div ng:controller="HistoryCtrl">
+			<div class="row" id="no-more-tables">
+				<table class="table table-striped"> 
+					<thead>
+						<tr>
+							<th>IPv6</th>
+							<th>Mask</th>
+							<th>Index</th>
+							<th>Result</th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="entry in history">
+						<td data-title="IPv6">{{entry.ipv6}}/{{entry.mask1}}</td>
+						<td data-title="Mask">{{entry.mask2}}</td>
+						<td data-title="Index">{{entry.index}}</td>
+						<td data-title="Result">{{entry.result}}</td>
+						<td data-title="">
+							<button class="btn btn-sm btn-success small" ng-click="loadFromHistory(entry)">Load</button> 
+							<button class="btn btn-sm btn-danger small" ng-click="deleteFromHistory(entry)">Delete</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<hr/>
+		<div class="alert alert-block fade in" ng-show="saveOk">
+			<button type="button" class="close" data-dismiss="alert" ng-click="saveOk=false">×</button>
+			<h4 class="alert-heading">Saved</h4>
+			<p>Item saved!</p>
+		</div>
+		<div class="alert alert-block alert-error fade in" ng-show="saveError">
+			<button type="button" class="close" data-dismiss="alert" ng-click="saveError=false">×</button>
+			<h4 class="alert-heading">Could not save</h4>
+			<p>Item already saved!</p>
+		</div>
+	</div>
+</div>
+<div class="header">
+	<ul class="nav nav-pills pull-right">
+		<li class="active"><a href="#">Home</a></li>
+		<li><a href="#">About</a></li>
+		<li><a href="#">Contact</a></li>
+	</ul>
+	<h3 class="text-muted">ipv_6</h3>
+</div>
+
+<div class="jumbotron">
+	<h1>'Allo, 'Allo!</h1>
+	<p class="lead">Always a pleasure scaffolding your apps.</p>
+	<p><a class="btn btn-lg btn-success" href="#">Splendid!</a></p>
+</div>
+
+<div class="row marketing">
+	<h4>HTML5 Boilerplate</h4>
+	<p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.</p>
+
+	<h4>Angular</h4>
+	<p>AngularJS is a toolset for building the framework most suited to your application development.</p>
+
+	<h4>Karma</h4>
+	<p>Spectacular Test Runner for JavaScript.</p>
+</div>
+</div>
+
+<div class="footer">
+	<p>♥ from the Yeoman team</p>
+</div>
