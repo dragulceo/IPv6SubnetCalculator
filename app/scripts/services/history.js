@@ -14,7 +14,7 @@ angular.module('ipv6App')
                item;
           while (n--) {
                item = history[n];
-               if (item.ipv6 === record.ipv6 && item.mask1 === record.mask1 && item.mask2 === record.mask2 && item.index === record.index) {
+               if (item.ipv6 === record.ipv6 && item.mask1 === record.mask1 && item.mask2 === record.mask2 && item.index === record.index && item.page === record.page && item.type === record.type) {
                     return n;
                }
           }

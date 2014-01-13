@@ -26,7 +26,69 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>IPv6 subnet calculator</h1>
+		</div>
+		<div class="col-md-12" ng-controller="MainCtrl" >
+			<form name="form" class="form row">
+				<fieldset>
+					<legend>{{oneLine}}</legend>
+					<label>Format: ipv6/mask1 mask2 [index]</label>
+					<input type="text" class="form-control" name="oneLine" placeholder="" ng-change="onOneLineChange(this)" ng-model="oneLine" >
+					<p>Eg: <a href="#/ip/2001:0db8:85a3::/16/32/index/10" title="Example">2001:0db8:85a3::/16 32 10</a></p>
+				</fieldset>
+				<div class="result"><button class="btn btn-sm btn-primary default small" ng-click="saveToHistory()">Add to history</button></div>
+			</form>
+		</div>
+		<div class="row">
+			<div class="col-md-5" ng-view="">
+				Loading...
+			</div>
+			<div class="col-md-7">
+				<h2>History</h2>
+				<div ng:controller="HistoryCtrl">
+					<div class="row" id="no-more-tables">
+						<table class="table table-striped"> 
+							<thead>
+								<tr>
+									<th>IPv6</th>
+									<th>Mask</th>
+									<th>Index</th>
+									<th>Result</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="entry in history">
+								<td data-title="IPv6">{{entry.ipv6}}/{{entry.mask1}}</td>
+								<td data-title="Mask">{{entry.mask2}}</td>
+								<td data-title="Index">{{entry.index}}</td>
+								<td data-title="Result">{{entry.result}}</td>
+								<td data-title="">
+									<button class="btn btn-sm btn-success small" ng-click="loadFromHistory(entry)">Load</button> 
+									<button class="btn btn-sm btn-danger small" ng-click="deleteFromHistory(entry)">Delete</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<hr/>
+				<div class="alert alert-block fade in" ng-show="saveOk">
+					<button type="button" class="close" data-dismiss="alert" ng-click="saveOk=false">×</button>
+					<h4 class="alert-heading">Saved</h4>
+					<p>Item saved!</p>
+				</div>
+				<div class="alert alert-block alert-error fade in" ng-show="saveError">
+					<button type="button" class="close" data-dismiss="alert" ng-click="saveError=false">×</button>
+					<h4 class="alert-heading">Could not save</h4>
+					<p>Item already saved!</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -77,6 +139,7 @@
         <script src="scripts/services/utils.js"></script>
         <script src="scripts/services/record.js"></script>
         <script src="scripts/directives/ipv6onblur.js"></script>
+        <script src="scripts/services/shared_record.js"></script>
         <!-- endbuild -->
 </body>
 </html>

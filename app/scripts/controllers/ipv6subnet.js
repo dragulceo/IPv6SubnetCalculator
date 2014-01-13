@@ -1,31 +1,32 @@
 'use strict';
 
 angular.module('ipv6App')
-     .controller('Ipv6subnetCtrl', ['$scope', '$routeParams', '$location', 'History', 'Ipv6util', 'Errors', 'record',
+     .controller('Ipv6subnetCtrl', ['$scope', '$routeParams', '$location', 'Ipv6util', 'Errors', 'SharedRecord',
 
-function($scope, $routeParams, $location, history, ipv6util, errors, Record) {
+function($scope, $routeParams, $location, ipv6util, errors, SharedRecord) {
      var validateMask;
+     $scope.record = SharedRecord;
+
+     $scope.$watch(function() {
+          return $scope.record.getOneLine();
+     }, function() {
+          //$scope.oneLine = $scope.record.getOneLine();
+		 if($scope.shouldShowSubnets()) {
+			 calculateSubnetsAndPages();
+		 }
+     });
 
      function hasRecord() {
-          return !!$scope.record;
+          return !!$scope.record && $scope.record.ipv6;
      }
 
-     function updateLocation(page) {
-          if (hasRecord()) {
-               if (page) {
-                    $scope.record.page = parseInt(page, 10);
-               }
-               $location.path($scope.record.getUrl());
-               //$location.replace();
-          }
-     }
-
-     function getSubnets() {
+     function calculateSubnetsAndPages() {
           if (!hasRecord()) {
                return;
           }
           var i = 0,
-               page, pages = [], pagesNumber,
+               page, pages = [],
+               pagesNumber,
                record = $scope.record,
                prefixes = record.getPrefixes();
           $scope.subnets = prefixes.subnets;
@@ -34,7 +35,7 @@ function($scope, $routeParams, $location, history, ipv6util, errors, Record) {
                $scope.record.page = 0;
           }
           page = parseInt(record.page, 10) || 1;
-		  pagesNumber = prefixes.pages + 1;
+          pagesNumber = prefixes.pages + 1;
 
           if (pagesNumber > 5) {
                if (page > 1) {
@@ -65,7 +66,6 @@ function($scope, $routeParams, $location, history, ipv6util, errors, Record) {
                     pages.push(i++);
                }
           }
-console.log(pages);
           $scope.pages = pages;
      }
 
@@ -74,20 +74,10 @@ console.log(pages);
           if (hasRecord()) {
                return $scope.record.getIPv6();
           }
-		  return '---';
+          return '---';
      };
      $scope.shouldShowIpAddress = function() {
-          return $scope.record && $scope.record.ipv6 && $scope.record.index;
-     };
-     $scope.updateAddress = function() {
-          if ($scope.shouldShowIpAddress()) {
-
-          } else {
-               //$scope.setPage(0);
-          }
-          if (hasRecord()) {
-              updateLocation();
-          }
+          return $scope.record && $scope.record.ipv6 && $scope.record.isTypeIndex();
      };
      $scope.setPage = function(page) {
           if (page === "Next") {
@@ -97,7 +87,7 @@ console.log(pages);
           } else if (page && !angular.isNumber(page)) {
                return;
           }
-          updateLocation(page);
+          $scope.record.page = page;
      };
      $scope.getPageNumber = function(n) {
           if (angular.isNumber(n)) {
@@ -106,51 +96,7 @@ console.log(pages);
           return n;
      };
      $scope.shouldShowSubnets = function() {
-          var ret = $scope.record && $scope.record.ipv6 && !$scope.record.index;
-          if (ret) {
-               getSubnets();
-          }
-          return ret;
+          return $scope.record && $scope.record.ipv6 && $scope.record.isTypeList();
      };
-     $scope.setOneLine = function(record) {
-          record = record || $scope.record;
-          $scope.oneLine = record.getOneLine();
-     };
-     $scope.onOneLineChange = function(noLocation) {
-          $scope.record.fromOneLine($scope.oneLine);
-          //if (noLocation) {
-          //     updateLocation();
-          //}
-          //$scope.setPage(0);
-     };
-     $scope.saveToHistory = function() {
-          $scope.saveError = !history.addRecord($scope.record.exportObject());
-          $scope.saveOk = !$scope.saveError;
-     };
-
-     if ($routeParams.ipv6) {
-          /*     $scope.record = {
-               ipv6: $routeParams.ipv6,
-               mask1: parseInt($routeParams.mask1, 10),
-               mask2: parseInt($routeParams.mask2, 10),
-               index: parseInt($routeParams.index, 10)
-          };
-	 */
-          if (!$scope.record) {
-               $scope.record = new Record($routeParams);
-          } else {
-               $scope.record.initFromObject($routeParams);
-          }
-          $scope.setOneLine($scope.record);
-
-          if (0) {
-               $scope.onOneLineChange(true);
-               if ($routeParams.index) {
-                    $scope.ipAddress();
-               } else {
-                    getSubnets();
-               }
-          }
-     }
 
 }]);
