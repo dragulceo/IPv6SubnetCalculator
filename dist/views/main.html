@@ -1,0 +1,19 @@
+<h2>Results</h2>
+	<div ng-controller="Ipv6subnetCtrl">
+		<div ng-show="shouldShowSubnets()">
+			<div ng-show="pages.length">
+				<ul class="pagination pagination-sm">
+					<li ng-repeat="n in pages track by $index" ng-class="{active: n==record.page}">
+					<a ng-if="n != '...'" ng-click="setPage(n)">{{n}}</a>
+					<span ng-if="n == '...'">{{n}}</span>
+					</li>
+				</ul>
+			</div>
+			<ul>
+				<li ng-repeat="ip in subnets track by $index">{{ip}}</li>
+			</ul>
+		</div>
+		<div ng-show="shouldShowIpAddress()">
+			<h2>{{ipAddress()}}</h2>
+		</div>
+	</div>
