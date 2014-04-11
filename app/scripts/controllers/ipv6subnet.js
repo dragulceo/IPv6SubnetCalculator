@@ -11,9 +11,9 @@ function($scope, $routeParams, $location, ipv6util, errors, SharedRecord) {
           return $scope.record.getOneLine();
      }, function() {
           //$scope.oneLine = $scope.record.getOneLine();
-		 if($scope.shouldShowSubnets()) {
-			 calculateSubnetsAndPages();
-		 }
+          if ($scope.shouldShowSubnets()) {
+               calculateSubnetsAndPages();
+          }
      });
 
      function hasRecord() {

@@ -2,8 +2,8 @@
 
 angular.module('ipv6App')
      .service('Ipv6util', function Ipv6util() {
-     var minimizeIPv6, error,
-     getIPAddressArray8FromString, getIPv6StrFromBytesArray, getSubnetAddress, getListOfPrefixes, setLastError, getLastError;
+     var minimizeIPv6,
+     getIPAddressArray8FromString, getIPv6StrFromBytesArray, getSubnetAddress, getListOfPrefixes;
 
      minimizeIPv6 = function(ipv6str) {
           return ipv6str.replace(/(:0(:(0))+(:|$))/, "::");
@@ -38,9 +38,9 @@ angular.module('ipv6App')
                num, i, n;
           //fix the case when the byteArray length is 17 
           ipArray8 = ipArray8.splice(-16);
-		  while(ipArray8.length < 16) {
-			  ipArray8.push(0);
-		  }
+          while (ipArray8.length < 16) {
+               ipArray8.push(0);
+          }
           n = ipArray8.length;
           for (i = 0; i < n; i++) {
                if (ipArray8[i] < 0) {
@@ -66,7 +66,7 @@ angular.module('ipv6App')
 
           mask = new BigInteger("ffffffffffffffff", 16).shiftLeft(128 - mask1);
           prefix = ip.and(mask);
-          index = new BigInteger( "" + index, 10);
+          index = new BigInteger("" + index, 10);
           index = index.multiply((new BigInteger("1")).shiftLeft(128 - mask2));
           prefix = prefix.add(index);
           //          return prefix.toByteArray(); //ip32to16(ipArray32);
@@ -95,9 +95,9 @@ angular.module('ipv6App')
           maxValue = (new BigInteger("1")).shiftLeft(mask2 - mask1).intValue();
           adder = (new BigInteger("1")).shiftLeft(128 - mask2);
           page = parseInt(page, 10);
-		  if (page > 0) {
-			  page = page - 1;
-		  }
+          if (page > 0) {
+               page = page - 1;
+          }
           n = Math.min((page + 1) * pageSize, maxValue);
           prefix = prefix.add(adder.multiply(new BigInteger((page * pageSize).toString())));
           for (index = page * pageSize; index < n; index++) {

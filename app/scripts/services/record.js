@@ -39,9 +39,9 @@ angular.module('ipv6App')
           if (this.type === 0) {
                if ('page' in init) {
                     this.type = TYPE_LIST;
-					if(this.page === 0) {
-						this.page = 1;
-					}
+                    if (this.page === 0) {
+                         this.page = 1;
+                    }
                } else {
                     this.type = TYPE_INDEX;
                }
@@ -90,11 +90,11 @@ angular.module('ipv6App')
 
      Record.prototype.isTypeList = function() {
           return this.type === TYPE_LIST;
-     }
+     };
 
      Record.prototype.isTypeIndex = function() {
           return this.type === TYPE_INDEX;
-     }
+     };
 
      /**
       * Accepted string formats : ip::v6::/mask1 mask2 index|pPage
