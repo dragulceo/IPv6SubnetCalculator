@@ -11,7 +11,7 @@ describe('Service: SharedRecord', function () {
     SharedRecord = _SharedRecord_;
   }));
 
-  it('should do something', function () {
+  it('should have the shared record', function () {
     expect(!!SharedRecord).toBe(true);
   });
 

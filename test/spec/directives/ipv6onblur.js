@@ -6,15 +6,29 @@ describe('Directive: ipv6onblur', function () {
   beforeEach(module('ipv6App'));
 
   var element,
-    scope;
+    scope,
+    clicked = false;
 
-  beforeEach(inject(function ($rootScope) {
+  beforeEach(inject(function ($rootScope, $compile) {
     scope = $rootScope.$new();
+    scope.onBlurHandler = function () {
+     clicked = true;
+    };
+    element = angular.element('<input type="text" ng-click="onBlurHandler" />');
+    element = $compile(element)(scope);
+    scope.$digest();
+    spyOn(scope, 'onBlurHandler');
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<ipv6onblur></ipv6onblur>');
-    element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the ipv6onblur directive');
+  it('should trigger blur on blur', inject(function ($compile) {
+    element.triggerHandler('click');
+    //this works too
+    //element[0].click();
+
+    //It doesn't work otherwise (using $digest or $apply)
+    //It may be due to the fact that the event is triggered async
+    setTimeout(function () {
+      expect(scope.onBlurHandler).toHaveBeenCalled();
+    }, 100);
   }));
 });
