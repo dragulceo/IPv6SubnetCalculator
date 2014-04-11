@@ -89,12 +89,6 @@ function($scope, $routeParams, $location, ipv6util, errors, SharedRecord) {
           }
           $scope.record.page = page;
      };
-     $scope.getPageNumber = function(n) {
-          if (angular.isNumber(n)) {
-               return n;
-          }
-          return n;
-     };
      $scope.shouldShowSubnets = function() {
           return $scope.record && $scope.record.ipv6 && $scope.record.isTypeList();
      };

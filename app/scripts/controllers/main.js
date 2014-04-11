@@ -34,7 +34,6 @@ function($scope, $routeParams, $location, $timeout, history, SharedRecord) {
           $scope.saveOk = !$scope.saveError;
      };
      if ($routeParams.ipv6) {
-          console.log('route');
           $scope.record.initFromObject($routeParams);
      }
 }]);

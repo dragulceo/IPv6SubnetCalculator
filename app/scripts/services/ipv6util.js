@@ -74,15 +74,7 @@ angular.module('ipv6App')
      };
 
 
-     getLastError = function() {
-          return error;
-     };
-
-     setLastError = function(str) {
-          error = str;
-     };
-
-	 /* page starts from 1 */
+     /* page starts from 1 */
      getListOfPrefixes = function(strIPv6Address, mask1, mask2, page) {
           var subnets = [],
                mask, prefix, n, adder, index, pageSize = 32,
@@ -120,8 +112,7 @@ angular.module('ipv6App')
 
      return {
           getSubnet: getSubnetAddress,
-          getListOfPrefixes: getListOfPrefixes,
-          getLastError: getLastError
+          getListOfPrefixes: getListOfPrefixes
 
      };
 });
